@@ -19,9 +19,25 @@ interface DataCountry {
   emojiCountries?: CountryMap
   imageCountries?: CountryMap
 }
+// tslint:disable-next-line: no-var-requires
+const commonLocalData = require('./assets/data/countries.json');
+const emojiCountries = {} as CountryMap;
+const imageCountries = {} as CountryMap;
+for (const countryCode of Object.keys(commonLocalData)) {
+  const { flagEmoji, flagImage, ...restCountryData } = commonLocalData[countryCode];
+  emojiCountries[countryCode as CountryCode] = {
+    ...restCountryData,
+    flag: flagEmoji,
+  }
+  imageCountries[countryCode as CountryCode] = {
+    ...restCountryData,
+    flag: flagImage,
+  }
+}
+
 const localData: DataCountry = {
-  emojiCountries: undefined,
-  imageCountries: undefined,
+  emojiCountries, // preload data
+  imageCountries, // preload data
 }
 
 export const loadDataAsync = ((data: DataCountry) => (
